@@ -6,7 +6,7 @@ Guia completo para os desafios do Trailhead Superbadge Data Protection.
 
 ## 📄 Visualizar Guia
 
-[🚀 Clique aqui para abrir o Guia Completo](https://htmlpreview.github.io/?https://github.com/EliasArauj/SuperbadgeDataProtection/blob/main/guia.html)
+[🚀 Clique aqui para abrir o Guia Completo](https://eliasarauj.github.io/SuperbadgeDataProtection)
 
 ## 📋 Conteúdo
 
