@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Correção - Salesforce Developer Edition</title>
+    <style>
+        @page {
+            margin: 0;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.8;
+            color: #1e293b;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+        }
+        .page {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .decorative-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            clip-path: ellipse(100% 60% at 50% 0%);
+            z-index: 0;
+        }
+        .decorative-circles {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            top: -300px;
+            right: -200px;
+            z-index: 1;
+            animation: rotate 20s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .decorative-circles::before {
+            content: '';
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            bottom: 100px;
+            left: -100px;
+        }
+        .decorative-circles::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+        }
+        .header {
+            text-align: center;
+            padding: 80px 40px 100px;
+            position: relative;
+            z-index: 2;
+        }
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            width: 120px;
+            height: 120px;
+            border-radius: 30px;
+            box-shadow: 0 25px 70px rgba(102, 126, 234, 0.5);
+            margin-bottom: 35px;
+            animation: float 3s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotateY(0deg); }
+            50% { transform: translateY(-15px) rotateY(5deg); }
+        }
+        h1 {
+            color: white;
+            font-size: 42px;
+            font-weight: 800;
+            margin: 0 0 15px 0;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            color: #ffffff;
+            font-size: 19px;
+            font-weight: 700;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.15);
+            padding: 8px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .challenge-badge {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 1);
+            border-radius: 50px;
+            color: #764ba2;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .content {
+            padding: 0 40px 40px;
+            position: relative;
+            z-index: 2;
+        }
+        .important-note {
+            background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+            border-left: 5px solid #3b82f6;
+            border-radius: 16px;
+            padding: 25px 30px;
+            margin: -40px 0 40px 0;
+            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .important-note::before {
+            content: '📋';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 48px;
+            opacity: 0.1;
+        }
+        .important-note strong {
+            color: #1e40af;
+            font-size: 18px;
+        }
+        .trailhead-info {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 50px;
+            box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .trailhead-info::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .trailhead-info h3 {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 22px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        .trailhead-info p {
+            font-size: 15px;
+            line-height: 1.7;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        .step {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            transition: all 0.3s ease;
+            page-break-inside: avoid;
+        }
+        .step:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 20px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            flex-shrink: 0;
+        }
+        .step-title {
+            color: #1e293b;
+            font-size: 22px;
+            font-weight: 700;
+            flex: 1;
+        }
+        .step-content {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 15px;
+            padding-left: 70px;
+            line-height: 1.8;
+        }
+        .highlight {
+            background: linear-gradient(120deg, #a78bfa 0%, #c084fc 100%);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .observation {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin-left: 70px;
+            border-radius: 10px;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.1);
+        }
+        .observation-label {
+            font-weight: 700;
+            color: #92400e;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .code-block {
+            margin: 20px 0 20px 70px;
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 35px;
+            background: #0f172a;
+            border-bottom: 1px solid #334155;
+        }
+        .code-block::after {
+            content: '⬤ ⬤ ⬤';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            color: #64748b;
+            font-size: 8px;
+            letter-spacing: 3px;
+        }
+        pre {
+            margin: 25px 0 0 0;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #e2e8f0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .code-warning {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left: 4px solid #ef4444;
+            padding: 15px 20px;
+            margin: 15px 0 15px 70px;
+            border-radius: 10px;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);
+        }
+        .code-warning strong {
+            color: #991b1b;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .code-info {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left: 4px solid #3b82f6;
+            padding: 15px 20px;
+            margin-left: 70px;
+            border-radius: 10px;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
+        }
+        .code-info-label {
+            font-weight: 700;
+            color: #1e40af;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .section-divider {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: 60px 0;
+        }
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #e2e8f0 20%, #e2e8f0 80%, transparent 100%);
+        }
+        .section-divider-icon {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
+            font-size: 24px;
+        }
+        .challenge-2 .step-number {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+        .challenge-2 .step:hover {
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+        .success-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 30px;
+            padding: 50px;
+            margin: 60px 0;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .success-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        .success-section h2 {
+            color: #1e40af;
+            font-size: 38px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        .success-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 0 auto 30px;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
+        }
+        .trophy-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .badge-title {
+            color: #475569;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .points {
+            color: #059669;
+            font-size: 26px;
+            font-weight: 800;
+            margin: 10px 0;
+        }
+        .success-message {
+            color: #64748b;
+            font-size: 15px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+        .feedback-section {
+            display: none;
+        }
+        .feedback-button {
+            display: none;
+        }
+        .continue-button {
+            display: none;
+        }
+        .footer {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            text-align: center;
+            padding: 50px 40px;
+            margin-top: 60px;
+        }
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .footer p {
+            color: #94a3b8;
+            font-size: 14px;
+            margin: 8px 0;
+        }
+        .footer-highlight {
+            color: white;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="decorative-bg">
+            <svg style="position: absolute; width: 100%; height: 100%;" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path d="M0,0 L1200,0 L1200,250 Q600,350 0,250 Z" fill="url(#grad1)"/>
+            </svg>
+        </div>
+        <div class="decorative-circles"></div>
+        
+        <div class="header">
+            <div class="logo-badge">
+                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="30" cy="30" r="28" fill="url(#toolGrad)" stroke="#667eea" stroke-width="2"/>
+                    <path d="M25 20 L35 20 L38 25 L35 30 L25 30 L22 25 Z" fill="white"/>
+                    <rect x="27" y="30" width="6" height="15" rx="1" fill="white"/>
+                    <defs>
+                        <linearGradient id="toolGrad" x1="0" y1="0" x2="60" y2="60">
+                            <stop offset="0%" style="stop-color:#667eea"/>
+                            <stop offset="100%" style="stop-color:#764ba2"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <h1>Guia de Correção</h1>
+            <p class="subtitle">Salesforce Developer Edition - Correção de Alterações em Contatos</p>
+            <div class="challenge-badge">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path d="M10 2 L12 8 L18 8 L13 12 L15 18 L10 14 L5 18 L7 12 L2 8 L8 8 Z" fill="white"/>
+                </svg>
+                Trailhead Challenge 1 | Identify data loss and restore data
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="important-note">
+                <strong>📋 Objetivo:</strong> Este guia apresenta o passo a passo para identificar e reverter alterações indevidas no campo E-mail dos contatos no Salesforce.
+            </div>
+
+            <div class="trailhead-info">
+                <h3><span>🎯</span>Sobre este Desafio Trailhead</h3>
+                <p>Este é o <strong>Desafio 1 - Identify data loss and restore data</strong> do <strong>Salesforce Trailhead</strong>, a plataforma oficial de aprendizado da Salesforce. Você irá praticar habilidades reais de administração e desenvolvimento, trabalhando com histórico de registros e código Apex para resolver um problema do mundo real.</p>
+                <p style="margin-top: 12px; font-size: 14px;">⭐ Ao completar, você ganhará pontos e badges para seu perfil Trailblazer!</p>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Inicie a Org</div>
+                </div>
+                <div class="step-content">
+                    Clique no botão <strong>"Launch"</strong> para abrir o ambiente Salesforce Developer Edition.
+                </div>
+                <div class="observation">
+                    <span class="observation-label">📌 Observação:</span> É o ambiente necessário para completar o desafio.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Investigue a Alteração</div>
+                </div>
+                <div class="step-content">
+                    Acesse o aplicativo <span class="highlight">Sales</span> e vá para a guia <span class="highlight">Contacts</span> (Contatos).<br>
+                    Clique em qualquer contato para iniciar a investigação.
+                </div>
+                <div class="observation">
+                    <span class="observation-label">📌 Observação:</span> Você precisará analisar o histórico do contato para identificar as mudanças.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Identifique o Usuário</div>
+                </div>
+                <div class="step-content">
+                    Na ficha do contato, localize o <span class="highlight">Contact History</span> (Histórico do Contato) para descobrir quem alterou o campo E-mail.
+                </div>
+                <div class="observation">
+                    <span class="observation-label">📌 Resultado:</span> O usuário identificado será o <strong>"marketing integration user"</strong>.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Obtenha o ID do Usuário</div>
+                </div>
+                <div class="step-content">
+                    Use a busca global para encontrar o perfil desse usuário.<br>
+                    Copie o <strong>ID do usuário</strong> que aparece na URL do navegador.
+                </div>
+                <div class="observation">
+                    <span class="observation-label">📌 Importante:</span> Você precisará desse ID para o código Apex no próximo passo.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Abra o Console</div>
+                </div>
+                <div class="step-content">
+                    Vá em <span class="highlight">Setup</span> (Configuração) e lance o <span class="highlight">Developer Console</span> (Console do Desenvolvedor).<br>
+                    Abra a janela <span class="highlight">Execute Anonymous Window</span> em:<br>
+                    <strong>Debug > Open Execute Anonymous Window</strong>
+                </div>
+                <div class="observation">
+                    <span class="observation-label">📌 Observação:</span> Esta é a interface onde você executará o código de correção.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">5.1</div>
+                    <div class="step-title">Código Apex para Correção</div>
+                </div>
+                <div class="step-content">
+                    Cole o código abaixo na janela Execute Anonymous Window.
+                </div>
+                <div class="code-warning">
+                    <strong>⚠️ IMPORTANTE:</strong> Substitua <span class="highlight" style="background: #fee2e2; color: #991b1b;">'YOUR-MARKETING USER ID'</span> pelo ID do usuário que você copiou no Passo 4.
+                </div>
+                <div class="code-block">
+<pre>List&lt;Contact&gt; contactsToUpdate = new List&lt;Contact&gt;();
+List&lt;Id&gt; contactIds = new List&lt;Id&gt;();
+Map&lt;Id, String&gt; contactIdToOldEmail = new Map&lt;Id, String&gt;();
+
+for (ContactHistory historyRecord : [
+    SELECT Id, ContactId, OldValue 
+    FROM ContactHistory 
+    WHERE Field = 'Email' AND CreatedById = 'YOUR-MARKETING USER ID'
+]) {
+    contactIds.add(historyRecord.ContactId);
+    contactIdToOldEmail.put(historyRecord.ContactId, (String) historyRecord.OldValue);
+}
+
+for (Contact contactRecord : [
+    SELECT Id, Email 
+    FROM Contact 
+    WHERE Id IN :contactIds
+]) {
+    contactRecord.Email = contactIdToOldEmail.get(contactRecord.Id);
+    contactsToUpdate.add(contactRecord);
+}
+
+update contactsToUpdate;</pre>
+                </div>
+                <div class="code-info">
+                    <span class="code-info-label">💡 O que o código faz:</span>
+                    1. Busca o histórico de alterações de e-mail feitas pelo usuário específico<br>
+                    2. Recupera os valores antigos dos e-mails<br>
+                    3. Atualiza os contatos com os e-mails originais
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <div class="step-title">Prepare e Cole o Código</div>
+                </div>
+                <div class="step-content">
+                    Insira o script Apex de correção na janela.<br>
+                    <strong>Substitua o placeholder pelo ID do usuário</strong> que você copiou no Passo 4.
+                </div>
+                <div class="observation">
+                    <span class="observation-label">📌 Função:</span> O código irá localizar e reverter os e-mails alterados por esse ID.
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">7</div>
+                    <div class="step-title">Execute a Correção</div>
+                </div>
+                <div class="step-content">
+                    Clique no botão <strong>"Execute"</strong>.
+                </div>
+                <div class="observation">
+                    <span class="observation-label">✅ Confirmação:</span> Verifique se a execução retorna o status <strong>"success"</strong> (sucesso).
+                </div>
+            </div>
+
+            <div class="success-section" style="page-break-before: always; margin-top: 100px;">
+                <h2>✅ Finalizando o Desafio 1</h2>
+                <div class="success-card">
+                    <p style="color: #475569; font-weight: 600; margin-bottom: 15px;"><strong>Após executar o código com sucesso:</strong></p>
+                    <ol style="text-align: left; padding-left: 30px; color: #64748b; line-height: 2;">
+                        <li>Retorne à página do desafio no Trailhead</li>
+                        <li>Clique no botão <strong>"Verify Step"</strong> ou <strong>"Check Challenge"</strong></li>
+                        <li>Aguarde a validação automática</li>
+                        <li>Receba seus pontos e continue sua jornada! 🎉</li>
+                    </ol>
+                </div>
+                <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px 20px; border-radius: 10px; text-align: left; max-width: 600px; margin: 0 auto;">
+                    <p style="margin: 0; font-size: 14px; color: #92400e;">
+                        <strong>💡 Dica:</strong> Se a verificação falhar, revise se você substituiu corretamente o ID do usuário no código e se a execução retornou "success".
+                    </p>
+                </div>
+            </div>
+
+            <div class="section-divider" style="page-break-before: always; margin-top: 100px;">
+                <div class="section-divider-icon">🛡️</div>
+            </div>
+
+            <div class="challenge-2">
+                <div class="header" style="padding: 40px 0;">
+                    <h1 style="color: #10b981; text-shadow: none;">🛡️ Desafio 2</h1>
+                    <p class="subtitle" style="color: #059669; text-shadow: none;">Prevent and Protect Against Data Loss</p>
+                    <div class="challenge-badge" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: rgba(255,255,255,0.3);">🏔️ Trailhead Challenge 2 | Prevenindo Perda de Dados</div>
+                </div>
+
+                <div class="important-note" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #10b981;">
+                    <strong style="color: #065f46;">📋 Objetivo:</strong> Configurar medidas preventivas para proteger dados contra perdas futuras, incluindo backup automático e restrições de permissões.
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Agendar Exportação de Dados</div>
+                    </div>
+                    <div class="step-content">
+                        No <span class="highlight">Setup</span>, pesquise e acesse <strong>"Data Export"</strong>.<br>
+                        Clique em <strong>"Schedule Export"</strong> para configurar o backup.
+                    </div>
+                    <div class="observation">
+                        <span class="observation-label">📌 Observação:</span> Esta ação agendará backups automáticos dos seus dados do Salesforce.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Definir o Cronograma</div>
+                    </div>
+                    <div class="step-content">
+                        Defina uma <strong>"End Date"</strong> (ex: 15 de agosto) e um <strong>"Preferred Start Time"</strong> (ex: 12 a.m.).<br>
+                        Clique em <strong>"Save"</strong> para agendar a recorrência do backup.
+                    </div>
+                    <div class="observation">
+                        <span class="observation-label">📌 Observação:</span> O backup será executado automaticamente de acordo com o cronograma definido.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Acessar Conjuntos de Permissão</div>
+                    </div>
+                    <div class="step-content">
+                        No <span class="highlight">Setup</span>, pesquise e acesse <strong>"Permission Sets"</strong>.<br>
+                        Clique no conjunto de permissão <strong>"marketing integration user"</strong>.
+                    </div>
+                    <div class="observation">
+                        <span class="observation-label">📌 Observação:</span> Você irá modificar as permissões do usuário que causou a perda de dados.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Navegar até Contatos</div>
+                    </div>
+                    <div class="step-content">
+                        Dentro do Conjunto de Permissão, clique em <strong>"Object Settings"</strong>.<br>
+                        Encontre e selecione o objeto <strong>"Contacts"</strong>.
+                    </div>
+                    <div class="observation">
+                        <span class="observation-label">📌 Observação:</span> Você está acessando as configurações específicas do objeto Contatos.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <div class="step-title">Remover Permissão de Edição</div>
+                    </div>
+                    <div class="step-content">
+                        Clique em <strong>"Edit"</strong>. Encontre o campo <strong>"Email"</strong> e desmarque a caixa <strong>"Edit Access"</strong>.
+                    </div>
+                    <div class="observation" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #10b981;">
+                        <span class="observation-label" style="color: #065f46;">🛡️ Importante:</span> Isso impede que o usuário edite o campo E-mail no futuro, prevenindo nova perda de dados.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <div class="step-number">6</div>
+                        <div class="step-title">Salvar as Alterações</div>
+                    </div>
+                    <div class="step-content">
+                        Clique em <strong>"Save"</strong>.
+                    </div>
+                    <div class="observation" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #10b981;">
+                        <span class="observation-label" style="color: #065f46;">✅ Resultado:</span> A restrição de segurança está implementada.
+                    </div>
+                </div>
+
+                <div class="success-section" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); margin-top: 60px;">
+                    <h2 style="color: #065f46;">✅ Finalizando o Desafio 2</h2>
+                    <div class="success-card">
+                        <p style="color: #475569; font-weight: 600; margin-bottom: 15px;"><strong>Após concluir todas as configurações:</strong></p>
+                        <ol style="text-align: left; padding-left: 30px; color: #64748b; line-height: 2;">
+                            <li>Retorne à página do desafio no Trailhead</li>
+                            <li>Clique no botão <strong>"Verify Step"</strong> ou <strong>"Check Challenge"</strong></li>
+                            <li>Aguarde a validação das configurações de segurança</li>
+                            <li>Complete o módulo e ganhe sua badge! 🏆</li>
+                        </ol>
+                    </div>
+                    <div style="background: #d1fae5; border-left: 4px solid #10b981; padding: 15px 20px; border-radius: 10px; text-align: left; max-width: 600px; margin: 0 auto;">
+                        <p style="margin: 0; font-size: 14px; color: #065f46;">
+                            <strong>💡 Resumo:</strong> Você configurou backup automático de dados e removeu permissões desnecessárias, criando uma camada dupla de proteção contra perda de dados.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-section" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); margin-top: 80px; page-break-before: always;">
+                <h2 style="color: #1e40af; font-size: 48px; margin-bottom: 40px;">Uhuuu! 🎉</h2>
+                
+                <div class="success-card" style="max-width: 550px;">
+                    <div class="trophy-icon">🏆</div>
+                    <p class="badge-title">Superbadge: Data Protection</p>
+                    <div>
+                        <p class="points">+ 1000 pontos do desafio</p>
+                        <p class="points">+ 500 pontos bônus de Superbadge</p>
+                    </div>
+                    <p class="success-message">
+                        Você conquistou o melhor emblema e muitos pontos. Agora conte a todo mundo!
+                    </p>
+                </div>
+
+                <div class="continue-button">
+                    Continuar
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-logo">Trailhead 🏔️</div>
+            <p><span class="footer-highlight">Salesforce Developer Edition</span> | Guia de Correção de Contatos</p>
+            <p>Documento gerado para auxiliar na conclusão do desafio</p>
+            <p style="margin-top: 20px; font-size: 13px;">
+                Continue aprendendo em <span class="footer-highlight">trailhead.salesforce.com</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
